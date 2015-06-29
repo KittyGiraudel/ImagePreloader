@@ -66,13 +66,6 @@
       this.preloadSequence();
     }
 
-    this.done();
-  };
-
-  /**
-   * Resolve the promise for each image collection in the queue
-   */
-  ImagePreloader.prototype.done = function () {
     this.items.forEach(function (item) {
       Promise.all(item.collection)
         .then(item.deferred.resolve.bind(item.deferred))
