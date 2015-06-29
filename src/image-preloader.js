@@ -75,7 +75,7 @@
   ImagePreloader.prototype.done = function () {
     this.items.forEach(function (item) {
       Promise.all(item.collection)
-        .then(function () { item.deferred.resolve() })
+        .then(item.deferred.resolve.bind(item.deferred))
         .catch(console.log.bind(console));
       });
   };
