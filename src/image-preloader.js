@@ -18,7 +18,7 @@
    */
   var ImagePreloader = function (options) {
     this.options = options || {};
-    this.options.parallel = options.parallel || false;
+    this.options.parallel = this.options.parallel || false;
     this.items = [];
   };
 
