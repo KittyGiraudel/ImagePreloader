@@ -72,3 +72,7 @@ ip.preload();
 ```
 
 In this case, all decks are loaded in parallel so the outcome might vary on which is fully loaded first.
+
+## Demo
+
+[Proof of concept](http://codepen.io/HugoGiraudel/pen/5acaabef85072295d7669a73afb43023). Uses images from http://lorempixel.com.
