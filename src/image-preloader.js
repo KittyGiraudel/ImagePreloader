@@ -110,9 +110,7 @@
    */
   ImagePreloader.prototype.preloadSequence = function () {
     this.items.forEach(function (item) {
-      item.collection.forEach(function (image, i) {
-        item.collection[i] = this.preloadImage(image);
-      }, this);
+      item.collection.map(this.preloadImage);
     }, this);
   };
 
