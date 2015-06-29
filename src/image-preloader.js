@@ -23,6 +23,8 @@
   };
 
   /**
+   * The `queue` methods is intended to add an array (a deck) of images to the
+   * queue. It does not preload the images though; only adds them to the queue.
    * @param  {Array} array - Array of images to add the queue
    * @return {Promise}
    */
@@ -42,7 +44,10 @@
   };
 
   /**
-   * Preload a single image
+   * The `preloadImage` preloads the image resource living at `path` and returns
+   * a promise that resolves when the image is successfully loaded by the 
+   * browser or if there is an error. Beware, the promise is not rejected in 
+   * case the image cannot be loaded; it gets resolved nevertheless.
    * @param  {String} path - Image url
    * @return {Promise}
    */
@@ -56,10 +61,16 @@
   };
 
   /**
-   * Preload the whole queue (sequencially or in parallel depending on the value
-   * of `this.options.parallel`)
+   * The `preload` method preloads the whole queue of decks added through the
+   * `queue` method. It returns a promise that gets resolved when all decks have
+   * been fully loaded.
+   * The decks are loaded either sequencially (one after the other) or in
+   * parallel, depending on the `parallel` options.
+   * @return {Promise}
    */
   ImagePreloader.prototype.preload = function () {
+    var deck, decks = [];
+
     if (this.options.parallel) {
       this.preloadParallel();
     } else {
@@ -67,17 +78,23 @@
     }
 
     this.items.forEach(function (item) {
-      Promise.all(item.collection)
+      deck = Promise.all(item.collection)
         .then(item.deferred.resolve.bind(item.deferred))
         .catch(console.log.bind(console));
-      });
+
+      decks.push(deck);
+    });
+
+    return Promise.all(decks);
   };
 
   /**
    * Preload the queue in parallel
    */
   ImagePreloader.prototype.preloadParallel = function () {
-    var max = Math.max.apply(Math, this.items.map(function (el) { return el.collection.length; }));
+    var max = Math.max.apply(Math, this.items.map(function (el) {
+      return el.collection.length;
+    }));
     
     for (var i = 0; i < max; i++) {
       this.items.forEach(function (item) {
