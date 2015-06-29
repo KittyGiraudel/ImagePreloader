@@ -1,8 +1,10 @@
 # ImagePreloader
 
-A lightweight JavaScript implementation of an image preloader relying on Promises.
+ImagePreloader is a lightweight JavaScript implementation of an image preloader relying on Promises. The point is to be able to preload a bunche of images in the browser before they get actually used so the experience is seamless for the user.
 
 ImagePreloader can deal with a single collection of images, but is meant to handle a queue of collections. It can load them in sequence (first collection in queue, then second, then third...), or in parallel (first image of each collection, then second image of each collection...).
+
+The idea is simple: you add decks (collection of images) to the preloader queue with the `.queue(array)` method. Then, when you want to preload the images, you use the `.preload()` method. That's it.
 
 ## Preloading a single collection of images
 
@@ -14,7 +16,8 @@ var ip = new ImagePreloader();
 
 // Queue the images
 ip.queue(images).then(function () {
-  console.log('Images are now pre-loaded.');
+  // Code to execute once the collection is fully loaded
+  console.log('Images are now preloaded.');
 });
 
 // Preload the queue
