@@ -1,4 +1,7 @@
 (function (global) {
+
+  'use strict';
+
   function defer() {
     var resolve, reject, promise = new Promise(function (a, b) {
       resolve = a;
@@ -20,6 +23,7 @@
     this.options = options || {};
     this.options.parallel = this.options.parallel || false;
     this.items = [];
+    this.max = 0;
   };
 
   /**
@@ -29,9 +33,8 @@
    * @return {Promise}
    */
   ImagePreloader.prototype.queue = function (array) {
-    if (!Array.isArray(array)) {
-      array = [array];
-    }
+    if (!Array.isArray(array)) array = [array];
+    if (array.length > this.max) this.max = array.length;
     
     var deferred = defer();
 
@@ -69,49 +72,33 @@
    * @return {Promise}
    */
   ImagePreloader.prototype.preload = function () {
-    var deck, decks = [];
+    var decks = [];
 
     if (this.options.parallel) {
-      this.preloadParallel();
+
+      for (var i = 0; i < this.max; i++) {
+        this.items.forEach(function (item) {
+          if (typeof item.collection[i] !== 'undefined') {
+            item.collection[i] = this.preloadImage(item.collection[i]);
+          }
+        }, this);
+      }
+
     } else {
-      this.preloadSequence();
+
+      this.items.forEach(function (item) {
+        item.collection.map(this.preloadImage);
+      }, this);
+
     }
 
     this.items.forEach(function (item) {
-      deck = Promise.all(item.collection)
+      decks.push( Promise.all(item.collection)
         .then(item.deferred.resolve.bind(item.deferred))
-        .catch(console.log.bind(console));
-
-      decks.push(deck);
+        .catch(console.log.bind(console)) );
     });
 
     return Promise.all(decks);
-  };
-
-  /**
-   * Preload the queue in parallel
-   */
-  ImagePreloader.prototype.preloadParallel = function () {
-    var max = Math.max.apply(Math, this.items.map(function (el) {
-      return el.collection.length;
-    }));
-    
-    for (var i = 0; i < max; i++) {
-      this.items.forEach(function (item) {
-        if (typeof item.collection[i] !== 'undefined') {
-          item.collection[i] = this.preloadImage(item.collection[i]);
-        }
-      }, this);
-    }
-  };
-
-  /**
-   * Preload the queue in sequence
-   */
-  ImagePreloader.prototype.preloadSequence = function () {
-    this.items.forEach(function (item) {
-      item.collection.map(this.preloadImage);
-    }, this);
   };
 
   global.ImagePreloader = ImagePreloader;
