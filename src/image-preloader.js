@@ -82,7 +82,7 @@
     for (var i = 0; i < max; i++) {
       this.items.forEach(function (item) {
         if (typeof item.collection[i] !== 'undefined') {
-          item.collection[i] = this.preloadImage(item.collection[i])
+          item.collection[i] = this.preloadImage(item.collection[i]);
         }
       }, this);
     }
