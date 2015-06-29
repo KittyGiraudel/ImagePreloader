@@ -76,7 +76,7 @@
   /**
    * Preload the queue in parallel
    */
-  ImagePreloader.prototype.preloadParallel = function () {}
+  ImagePreloader.prototype.preloadParallel = function () {
     var max = Math.max.apply(Math, this.items.map(function (el) { return el.collection.length; }));
     
     for (var i = 0; i < max; i++) {
@@ -91,7 +91,7 @@
   /**
    * Preload the queue in sequence
    */
-  ImagePreloader.prototype.preloadSequence = function () {}
+  ImagePreloader.prototype.preloadSequence = function () {
     this.items.forEach(function (item) {
       item.collection.forEach(function (image, i) {
         item.collection[i] = this.preloadImage(image);
