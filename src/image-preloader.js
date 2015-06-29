@@ -33,8 +33,13 @@
    * @return {Promise}
    */
   ImagePreloader.prototype.queue = function (array) {
-    if (!Array.isArray(array)) array = [array];
-    if (array.length > this.max) this.max = array.length;
+    if (!Array.isArray(array)) {
+      array = [array];
+    }
+
+    if (array.length > this.max) {
+      this.max = array.length;
+    }
     
     var deferred = defer();
 
@@ -72,7 +77,7 @@
    * @return {Promise}
    */
   ImagePreloader.prototype.preload = function () {
-    var decks = [];
+    var deck, decks = [];
 
     if (this.options.parallel) {
 
@@ -93,9 +98,11 @@
     }
 
     this.items.forEach(function (item) {
-      decks.push( Promise.all(item.collection)
+      deck = Promise.all(item.collection)
         .then(item.deferred.resolve.bind(item.deferred))
-        .catch(console.log.bind(console)) );
+        .catch(console.log.bind(console));
+
+      decks.push(deck);
     });
 
     return Promise.all(decks);
