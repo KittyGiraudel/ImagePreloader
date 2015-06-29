@@ -31,14 +31,14 @@
       array = [array];
     }
     
-    var d = defer();
+    var deferred = defer();
 
     this.items.push({
       collection: array,
-      deferred: d
+      deferred: deferred
     });
     
-    return d.promise;
+    return deferred.promise;
   };
 
   /**
