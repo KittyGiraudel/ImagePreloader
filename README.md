@@ -1,10 +1,10 @@
 # ImagePreloader
 
-ImagePreloader is a lightweight JavaScript implementation of an image preloader relying on Promises. The point is to be able to preload a bunche of images in the browser before they get actually used so the experience is seamless for the user.
+ImagePreloader is a lightweight JavaScript implementation of an image preloader relying on Promises. The point is to be able to preload a bunch of images in the browser before they get actually used, in order to provide the user a seamless experience.
 
-ImagePreloader can deal with a single collection of images, but is meant to handle a queue of collections. It can load them in sequence (first collection in queue, then second, then third...), or in parallel (first image of each collection, then second image of each collection...).
+ImagePreloader can deal with a single collection of images, but is primarily meant to handle a queue (list) of collections. It can load them in sequence (first collection in queue, then second, then third...), or in parallel (first image of each collection, then second image of each collection...).
 
-The idea is simple: you add decks (collection of images) to the preloader queue with the `.queue(array)` method. Then, when you want to preload the images, you use the `.preload()` method. That's it.
+The idea is simple: you add decks (collections of images) to the preloader queue with the `.queue(array)` method. This method returns a Promise so you can use `.then(..)` on it to execute some code once it gets fully loaded. To launch the preloading, you use the `.preload()` method. That's it.
 
 ## Preloading a single collection of images
 
@@ -15,10 +15,11 @@ var images = ['/image-1.png', 'image-2.jpg', 'http://lorempixel.com/200/400'];
 var ip = new ImagePreloader();
 
 // Queue the images
-ip.queue(images).then(function () {
+ip.queue(images)
   // Code to execute once the collection is fully loaded
-  console.log('Images are now preloaded.');
-});
+  .then(function () {
+    console.log('Images are now preloaded.');
+  });
 
 // Preload the queue
 ip.preload();
@@ -38,12 +39,15 @@ var deck2 = ['image_4.jpg', '/34086368342.jpg', 'spacer.gif'];
 var ip = new ImagePreloader();
 
 // Queue the images
-ip.queue(deck1).then(function () {
-  console.log('Deck 1 fully loaded');
-});
-ip.queue(deck2).then(function () {
-  console.log('Deck 2 fully loaded');
-});
+ip.queue(deck1)
+  .then(function () {
+    console.log('Deck 1 fully loaded');
+  });
+  
+ip.queue(deck2)
+  .then(function () {
+    console.log('Deck 2 fully loaded');
+  });
 
 // Preload the queue
 ip.preload();
@@ -60,12 +64,15 @@ var ip = new ImagePreloader({
 });
 
 // Queue the images
-ip.queue(deck1).then(function () {
-  console.log('Deck 1 fully loaded');
-});
-ip.queue(deck2).then(function () {
-  console.log('Deck 2 fully loaded');
-});
+ip.queue(deck1)
+  .then(function () {
+    console.log('Deck 1 fully loaded');
+  });
+  
+ip.queue(deck2)
+  .then(function () {
+    console.log('Deck 2 fully loaded');
+  });
 
 // Preload the queue
 ip.preload();
