@@ -27,6 +27,10 @@
    * @return {Promise}
    */
   ImagePreloader.prototype.queue = function (array) {
+    if (!Array.isArray(array)) {
+      array = [array];
+    }
+    
     var d = defer();
 
     this.items.push({
