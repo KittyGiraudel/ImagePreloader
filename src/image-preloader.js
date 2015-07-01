@@ -19,11 +19,15 @@
    * Image preloader
    * @param {Object} options
    */
-  var ImagePreloader = function (options) {
+  var ImagePreloader = function (options, items) {
     this.options = options || {};
     this.options.parallel = this.options.parallel || false;
     this.items = [];
     this.max = 0;
+
+    if (Array.isArray(items)) {
+      this.queue(items);
+    }
   };
 
   /**
