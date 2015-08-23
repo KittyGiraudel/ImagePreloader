@@ -92,7 +92,7 @@
     } else {
 
       this.items.forEach(function (item) {
-        item.collection.map(this.preloadImage);
+        item.collection = item.collection.map(this.preloadImage);
       }, this);
 
     }
