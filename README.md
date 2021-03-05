@@ -76,4 +76,4 @@ ip.preload().then(function () {
 
 ## Demo
 
-[Proof of concept](http://codepen.io/HugoGiraudel/pen/5acaabef85072295d7669a73afb43023). Uses images from http://lorempixel.com.
+[Proof of concept](http://codepen.io/KittyGiraudel/pen/5acaabef85072295d7669a73afb43023). Uses images from http://lorempixel.com.
